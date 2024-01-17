@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curso com Popup</title>
+  <style>
+    .icone-flutuante {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    #thumbnails-popup {
+      display: none;
+      position: fixed;
+      bottom: 70px; /* Ajuste a distância do popup em relação ao ícone na vertical */
+      right: 20px; /* Ajuste a distância do popup em relação ao ícone na horizontal */
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      text-align: center;
+    }
+
+    .thumbnail {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+
+    #video-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      z-index: 1001;
+      text-align: center;
+    }
+  </style>
+  <!-- Inclua a biblioteca jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  
+  <!-- Conteúdo do seu curso aqui -->
+
+  <!-- Ícone flutuante -->
+  <div class="icone-flutuante" onclick="abrirThumbnailsPopup()">
+    <!-- Ícone (pode ser uma imagem ou ícone de fonte, por exemplo) -->
+    <img src="https://www.sistemafibra.org.br/senai/transparencia/images/icones/senai_libras.png" alt="Ícone Libras" width="40" height="40">
+  </div>
+
+  <!-- Popup com thumbnails -->
+  <div id="thumbnails-popup">
+    <div class="thumbnail" onclick="abrirVideoPopup('VIDEO_ID_1')">
+      <img src="https://img.youtube.com/vi/VIDEO_ID_1/mqdefault.jpg" alt="Thumbnail do vídeo 1">
+    </div>
+    <div class="thumbnail" onclick="abrirVideoPopup('VIDEO_ID_2')">
+      <img src="https://img.youtube.com/vi/VIDEO_ID_2/mqdefault.jpg" alt="Thumbnail do vídeo 2">
+    </div>
+    <div class="thumbnail" onclick="abrirVideoPopup('VIDEO_ID_3')">
+      <img src="https://img.youtube.com/vi/VIDEO_ID_3/mqdefault.jpg" alt="Thumbnail do vídeo 3">
+    </div>
+  </div>
+
+  <!-- Popup com vídeo -->
+  <div id="video-popup">
+    <iframe id="video-iframe" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+    <br>
+    <button onclick="fecharVideoPopup()">Fechar</button>
+  </div>
+
+  <!-- Seus scripts e funcionalidades aqui -->
+
+  <script>
+    function abrirThumbnailsPopup() {
+      // Exibe o popup com os thumbnails
+      $('#thumbnails-popup').fadeIn();
+    }
+
+    function abrirVideoPopup(videoId) {
+      // Oculta o popup de thumbnails
+      $('#thumbnails-popup').fadeOut();
+
+      // Atualiza o conteúdo do popup de vídeo com o iframe do vídeo
+      $('#video-iframe').attr('src', 'https://www.youtube.com/embed/' + videoId);
+
+      // Exibe o popup de vídeo
+      $('#video-popup').fadeIn();
+    }
+
+    function fecharVideoPopup() {
+      // Fecha o popup de vídeo
+      $('#video-popup').fadeOut();
+
+      // Pausa o vídeo ao fechar o popup
+      $('#video-iframe').attr('src', '');
+    }
+
+    // Fecha o popup de thumbnails ao clicar fora dele
+    $(document).mouseup(function(e) {
+      var container = $('#thumbnails-popup');
+      if (!container.is(e.target) && container.has(e.target).length === 0) {
+        container.fadeOut();
+      }
+    });
+
+    // Fecha o popup de vídeo ao clicar fora dele
+    $(document).mouseup(function(e) {
+      var container = $('#video-popup');
+      if (!container.is(e.target) && container.has(e.target).length === 0) {
+        container.fadeOut();
+
+        // Pausa o vídeo ao fechar o popup
+        $('#video-iframe').attr('src', '');
+      }
+    });
+  </script>
+
+</body>
+</html>
